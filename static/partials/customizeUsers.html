@@ -1,0 +1,26 @@
+<div ng-controller="customizeController">
+  <form>
+    First Name: <input type="text" ng-model="newUser.first_name" /><br />
+    Last Name: <input type="text" ng-model="newUser.last_name" /><br />
+    Favorite Language: <input type="text" ng-model="newUser.language" /><br />
+    <input type="submit" value="Add User" ng-click="addUser()" />
+  </form>
+  <table border="1">
+    <thead>
+      <tr>
+        <td>First Name</td>
+        <td>Last Name</td>
+        <td>Favorite Language</td>
+        <td>Actions</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in users | filter: filter_name | orderBy: 'name'">
+        <td>{{ user.first_name }}</td>
+        <td>{{ user.last_name }}</td>
+        <td>{{ user.language }}</td>
+        <td ng-click="deleteUser($index)"><button>Delete User</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

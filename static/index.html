@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-route.min.js"></script>
+    <script>
+      var myApp = angular.module("myApp", ["ngRoute"]);
+      myApp.factory("userFactory", function(){
+        var users = [];
+        var factory = {};
+        factory.getUsers = function(callback){
+          callback(users);
+        }
+        return factory;
+      });
+      myApp.config(function($routeProvider){
+        $routeProvider
+        .when("/", {templateUrl: "partials/customizeUsers.html"})
+        .when("/partial2", {templateUrl: "partials/userList.html"})
+        .otherwise({redirectTo: "/"});
+      });
+
+
+      myApp.controller("customizeController", function($scope, userFactory){
+        $scope.users = [];
+        userFactory.getUsers(function(data){
+          console.log(data);
+          $scope.users = data;
+        })
+        $scope.addUser = function(){
+          $scope.users.push($scope.newUser);
+          $scope.newUser = {};
+        }
+        $scope.deleteUser = function($index){
+          $scope.users.splice($index, 1);
+        }
+      });
+
+      myApp.controller("userListController", function($scope, userFactory){
+        $scope.users = [];
+        userFactory.getUsers(function(data){
+          $scope.users = data;
+        })
+      })
+    </script>
+  </head>
+  <body>
+    <div ng-app="myApp">
+      <h2><a href="#/">Customize Users</a> | <a href="#/partial2">User List</a></h2>
+      <div ng-view="">
+      </div>
+    </div>
+  </body>
+</html>
